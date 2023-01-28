@@ -21,7 +21,8 @@ contract NFTMarketplace is ERC721URIStorage {
     }
 
     mapping(uint256 => ListedNFT) ListedNFTId;
-    mapping(uint256 => address) userSoldItems;
+    mapping(address => uint256) userSoldItems;
+    mapping(uint256 => mapping(address => bool)) userLikedItem;
 
     event ListingNFT(
         uint256 indexed tokenId,
@@ -118,5 +119,23 @@ contract NFTMarketplace is ERC721URIStorage {
             }
         }
         return allNFTs;
+    }
+
+    function addLikeToNft(uint256 _tokenID) public {
+        require(!userLikedItem[_tokenID][msg.sender]);
+        ListedNFTId[_tokenID].likes += 1;
+        userLikedItem[_tokenID][msg.sender] = true;
+    }
+
+    function excuteSale(uint256 _tokenID) public payable {
+        uint256 price = ListedNFTId[_tokenID].price;
+        address seller = ListedNFTId[_tokenID].seller;
+        require(msg.value == price, "Insufficient funds to purchase");
+        userSoldItems[seller] += 1;
+        ListedNFTId[_tokenID].seller = payable(msg.sender);
+        _transfer(address(this), payable(msg.sender), _tokenID);
+        approve(address(this), _tokenID);
+        payable(owner).transfer(feePrice);
+        payable(seller).transfer(price);
     }
 }
