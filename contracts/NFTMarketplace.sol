@@ -10,6 +10,18 @@ contract NFTMarketplace is ERC721URIStorage {
     Counters.Counter private _tokenIds;
 
     address owner;
+    uint256 feePrice = 0.01 ether;
+
+    struct ListedNFT {
+        address owner;
+        address seller;
+        uint price;
+        uint likes;
+        bool islisted;
+    }
+
+    mapping (uint256, ListedNFT) ListedNFTId;
+    mapping (uint256, address) userSoldItems;
 
     constructor(address _owner) ERC721("NFTify NFT", "NFY") {
         owner = _owner;
