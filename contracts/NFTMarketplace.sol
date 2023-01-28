@@ -82,6 +82,8 @@ contract NFTMarketplace is ERC721URIStorage {
     }
 
     function listNFT(uint256 _price, uint256 _tokenID) internal {
+        require(msg.value == feePrice);
+        require(_price > 0);
         ListedNFTId[_tokenID] = ListedNFT({
             tokenId: _tokenID,
             owner: address(this),
@@ -100,6 +102,20 @@ contract NFTMarketplace is ERC721URIStorage {
 
         for (uint256 i = 0; i < currentTokenID; i++) {
             allNFTs[i] = ListedNFTId[i + 1];
+        }
+        return allNFTs;
+    }
+
+    function getUserNFTS() public view returns (ListedNFT[] memory) {
+        uint256 currentTokenID = _tokenIds.current();
+        ListedNFT[] memory allNFTs = new ListedNFT[](currentTokenID);
+        for (uint256 i = 0; i < currentTokenID; i++) {
+            if (
+                ListedNFTId[i].seller == msg.sender ||
+                ListedNFTId[i].owner == msg.sender
+            ) {
+                allNFTs[i] = ListedNFTId[i + 1];
+            }
         }
         return allNFTs;
     }
