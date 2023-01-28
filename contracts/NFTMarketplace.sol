@@ -93,4 +93,14 @@ contract NFTMarketplace is ERC721URIStorage {
         _transfer(payable(msg.sender), address(this), _tokenID);
         emit ListingNFT(_tokenID, address(this), msg.sender, _price, 0, true);
     }
+
+    function getAllNFTs() public view returns (ListedNFT[] memory) {
+        uint256 currentTokenID = _tokenIds.current();
+        ListedNFT[] memory allNFTs = new ListedNFT[](currentTokenID);
+
+        for (uint256 i = 0; i < currentTokenID; i++) {
+            allNFTs[i] = ListedNFTId[i + 1];
+        }
+        return allNFTs;
+    }
 }
