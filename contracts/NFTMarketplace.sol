@@ -12,15 +12,25 @@ contract NFTMarketplace is ERC721URIStorage {
     uint256 feePrice = 0.01 ether;
 
     struct ListedNFT {
+        uint256 tokenId;
         address owner;
         address seller;
         uint256 price;
         uint256 likes;
-        bool islisted;
+        bool isListed;
     }
 
     mapping(uint256 => ListedNFT) ListedNFTId;
     mapping(uint256 => address) userSoldItems;
+
+    event ListingNFT(
+        uint256 indexed tokenId,
+        address owner,
+        address seller,
+        uint256 price,
+        uint256 likes,
+        bool isListed
+    );
 
     modifier onlyOwner() {
         require(msg.sender == owner);
@@ -54,5 +64,33 @@ contract NFTMarketplace is ERC721URIStorage {
 
     function getCurrentTokenID() public view returns (uint256) {
         return _tokenIds.current();
+    }
+
+    function createNFT(string memory _tokenURI, uint256 _price)
+        public
+        payable
+        returns (uint256)
+    {
+        _tokenIds.increment();
+        uint256 newTokenID = _tokenIds.current();
+
+        _setTokenURI(newTokenID, _tokenURI);
+        _safeMint(msg.sender, newTokenID);
+
+        listNFT(_price, newTokenID);
+        return newTokenID;
+    }
+
+    function listNFT(uint256 _price, uint256 _tokenID) internal {
+        ListedNFTId[_tokenID] = ListedNFT({
+            tokenId: _tokenID,
+            owner: address(this),
+            seller: msg.sender,
+            price: _price,
+            likes: 0,
+            isListed: true
+        });
+        _transfer(payable(msg.sender), address(this), _tokenID);
+        emit ListingNFT(_tokenID, address(this), msg.sender, _price, 0, true);
     }
 }
