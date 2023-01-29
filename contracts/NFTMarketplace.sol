@@ -20,7 +20,7 @@ contract NFTMarketplace is ERC721URIStorage {
         bool isListed;
     }
 
-    mapping(uint256 => ListedNFT) ListedNFTId;
+    mapping(uint256 => ListedNFT) public ListedNFTId;
     mapping(address => uint256) userSoldItems;
     mapping(uint256 => mapping(address => bool)) userLikedItem;
 
@@ -75,9 +75,8 @@ contract NFTMarketplace is ERC721URIStorage {
         _tokenIds.increment();
         uint256 newTokenID = _tokenIds.current();
 
-        _setTokenURI(newTokenID, _tokenURI);
         _safeMint(msg.sender, newTokenID);
-
+        _setTokenURI(newTokenID, _tokenURI);
         listNFT(_price, newTokenID);
         return newTokenID;
     }
@@ -99,26 +98,45 @@ contract NFTMarketplace is ERC721URIStorage {
 
     function getAllNFTs() public view returns (ListedNFT[] memory) {
         uint256 currentTokenID = _tokenIds.current();
+        uint256 currentId;
+        uint256 currentIndex = 0;
         ListedNFT[] memory allNFTs = new ListedNFT[](currentTokenID);
 
         for (uint256 i = 0; i < currentTokenID; i++) {
-            allNFTs[i] = ListedNFTId[i + 1];
+            currentId = i + 1;
+            ListedNFT storage currentItem = ListedNFTId[currentId];
+            allNFTs[currentIndex] = currentItem;
+            currentIndex += 1;
         }
         return allNFTs;
     }
 
     function getUserNFTS() public view returns (ListedNFT[] memory) {
         uint256 currentTokenID = _tokenIds.current();
-        ListedNFT[] memory allNFTs = new ListedNFT[](currentTokenID);
+        uint256 itemCount = 0;
+        uint256 currentIndex = 0;
+        uint256 currentId;
         for (uint256 i = 0; i < currentTokenID; i++) {
             if (
-                ListedNFTId[i].seller == msg.sender ||
-                ListedNFTId[i].owner == msg.sender
+                ListedNFTId[i + 1].owner == msg.sender ||
+                ListedNFTId[i + 1].seller == msg.sender
             ) {
-                allNFTs[i] = ListedNFTId[i + 1];
+                itemCount += 1;
             }
         }
-        return allNFTs;
+        ListedNFT[] memory allUserNFTs = new ListedNFT[](itemCount);
+        for (uint256 i = 0; i < currentTokenID; i++) {
+            if (
+                ListedNFTId[i + 1].owner == msg.sender ||
+                ListedNFTId[i + 1].seller == msg.sender
+            ) {
+                currentId = i + 1;
+                ListedNFT storage currentItem = ListedNFTId[currentId];
+                allUserNFTs[currentIndex] = currentItem;
+                currentIndex += 1;
+            }
+        }
+        return allUserNFTs;
     }
 
     function addLikeToNft(uint256 _tokenID) public {
@@ -130,7 +148,7 @@ contract NFTMarketplace is ERC721URIStorage {
     function excuteSale(uint256 _tokenID) public payable {
         uint256 price = ListedNFTId[_tokenID].price;
         address seller = ListedNFTId[_tokenID].seller;
-        require(msg.value == price, "Insufficient funds to purchase");
+        require(msg.value >= price, "Insufficient funds to purchase");
         userSoldItems[seller] += 1;
         ListedNFTId[_tokenID].seller = payable(msg.sender);
         _transfer(address(this), payable(msg.sender), _tokenID);
