@@ -75,7 +75,7 @@ function Roadmap() {
     {
       title: "Q4 2023:",
       mt: "1500px",
-      ml: "1500px",
+      ml: "70%",
       arrowParams: { mt: "-10px", ml: "-70px", rotate: "rotate(-149deg)" },
       desc: "Integration of additional blockchain protocols to increase NFT interoperability and liquidity. Launch of creator incentives program to reward top performers and foster growth of the platform. Expansion into new international markets to reach a wider audience.",
     },
