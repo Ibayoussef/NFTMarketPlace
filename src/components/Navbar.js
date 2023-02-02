@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 import logo from "../assets/logo.svg";
 import { useSelector, useDispatch } from "react-redux";
 import { storeSigner, storeContract } from "../reducers/web3Reducer";
@@ -13,6 +14,7 @@ const Nav = styled.div`
   padding: 5px 20px;
   z-index: 99999;
   width: 100%;
+
   flex-direction: row;
   background-color: transparent;
   img {
@@ -25,7 +27,8 @@ const Nav = styled.div`
     transform: translate(-50%, -50%);
     display: flex;
     gap: 50px;
-    p {
+    p,
+    a {
       font-weight: 700;
       font-size: 24px;
       line-height: 36px;
@@ -33,6 +36,7 @@ const Nav = styled.div`
       color: #ffffff;
       text-shadow: 2px 2px 2px #7edbea;
       transition: all 0.4s;
+      text-decoration: none;
       &:hover {
         transform: translateY(-2px);
         text-shadow: 2px 1.5px 2px #7edbea;
@@ -69,8 +73,19 @@ const Nav = styled.div`
 `;
 
 function Navbar() {
+  const [feature, setFeature] = useState();
+  const [roadmap, setRoadmap] = useState();
   const dispatch = useDispatch();
+
   const { account } = useSelector((state) => state.web3);
+  useEffect(() => {
+    const feature = document.querySelector("#feature");
+    const roadmap = document.querySelector("#roadmap");
+    if (feature && roadmap) {
+      setFeature(feature);
+      setRoadmap(roadmap);
+    }
+  }, []);
   const handleConnect = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
@@ -89,8 +104,8 @@ function Navbar() {
       <img src={logo} alt="logo" />
       <div className="links">
         <p>Explore</p>
-        <p>Features</p>
-        <p>RoadMap</p>
+        <p onClick={() => feature.scrollIntoView()}>Features</p>
+        <p onClick={() => roadmap.scrollIntoView()}>RoadMap</p>
       </div>
       <button onClick={() => handleConnect()} className="connect">
         {account ? account.slice(0, 5) : "Connect"}

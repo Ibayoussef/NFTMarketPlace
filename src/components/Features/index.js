@@ -30,7 +30,7 @@ const Wrapper = styled.div`
 
 function Features() {
   return (
-    <Wrapper>
+    <Wrapper id="feature">
       <img src={mascot} alt="mascot" />
       <Description />
     </Wrapper>

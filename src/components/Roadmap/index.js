@@ -89,7 +89,7 @@ function Roadmap() {
     },
   ];
   return (
-    <Wrapper>
+    <Wrapper id="roadmap">
       <div className="titlewrapper">
         <h1 className="title">Roadmap for MemeNation</h1>
       </div>
