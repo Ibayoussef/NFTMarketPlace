@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { useNavigate } from "react-router-dom";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -59,6 +59,7 @@ const Wrapper = styled.div`
 `;
 
 function Description() {
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <h3 className="title">Features of MemeNation</h3>
@@ -82,7 +83,9 @@ function Description() {
       <p className="slogan mt-39">
         Join MemeNation now and turn your memes into valuable digital assets!
       </p>
-      <button className="button mt-39">CREATE YOUR FIRST MEME</button>
+      <button className="button mt-39" onClick={() => navigate("/create")}>
+        CREATE YOUR FIRST MEME
+      </button>
     </Wrapper>
   );
 }

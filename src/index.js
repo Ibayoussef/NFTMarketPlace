@@ -5,10 +5,16 @@ import { Provider } from "react-redux";
 import { store } from "./store/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./pages/Home";
+import Create from "./pages/Create";
+import Footer from "./components/Footer";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/create",
+    element: <Create />,
   },
 ]);
 
@@ -17,6 +23,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <RouterProvider router={router} />
+      <Footer />
     </Provider>
   </React.StrictMode>
 );
