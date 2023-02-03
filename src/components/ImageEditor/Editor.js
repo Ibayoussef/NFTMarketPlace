@@ -39,7 +39,7 @@ const Wrapper = styled.div`
   }
 `;
 
-function Editor() {
+function Editor({ setActive }) {
   const canvasRef = useRef(null);
   const [image, setImage] = useState(null);
   const [texts, setTexts] = useState([]);
@@ -49,7 +49,7 @@ function Editor() {
   const [newText, setNewText] = useState("");
   const [fontSize, setFontSize] = useState(48);
   const [fontWeight, setFontWeight] = useState("normal");
-  const [fontColor, setFontColor] = useState("white");
+  const [fontColor, setFontColor] = useState("#ffffff");
   const handleFileChange = (e) => {
     const file = e.target.files[0];
 
@@ -149,6 +149,7 @@ function Editor() {
       });
     };
   };
+
   const handleExport = () => {
     const link = document.createElement("a");
     link.download = "image.png";
@@ -177,6 +178,7 @@ function Editor() {
         fontWeight={fontWeight}
         setFontWeight={setFontWeight}
         setImage={setImage}
+        setActive={setActive}
       />
       <div className="image">
         {!image && (

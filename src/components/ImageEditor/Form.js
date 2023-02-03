@@ -3,7 +3,6 @@ import add from "../../assets/add.svg";
 import remove from "../../assets/delete.svg";
 import { useRef } from "react";
 const Wrapper = styled.div`
-  background: #1c1a32;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -265,6 +264,7 @@ function Form({
   fontWeight,
   setFontWeight,
   setImage,
+  setActive,
 }) {
   const range = useRef();
   const rangeWeight = useRef();
@@ -353,6 +353,9 @@ function Form({
       </button>
       <button className="save" onClick={() => setImage("")}>
         Change Image
+      </button>
+      <button className="save" onClick={() => setActive("second")}>
+        Next
       </button>
     </Wrapper>
   );
