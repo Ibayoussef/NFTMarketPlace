@@ -156,7 +156,7 @@ function NFT({ item, setLike, like }) {
       </div>
       <div className="tags">
         <p>Tags</p>
-        <div className="tag">Funny</div>
+        <div className="tag">{item.tags}</div>
       </div>
     </Wrapper>
   );

@@ -9,13 +9,13 @@ import axios from "axios";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 70%;
 `;
 const NFTS = styled.div`
   position: relative;
-  left: 50%;
-  transform: translateX(-50%);
+  gap: 30px;
   display: flex;
   flex-direction: column;
 
@@ -57,6 +57,7 @@ function Explore() {
               image: meta.image,
               name: meta.name,
               description: meta.description,
+              tags: meta.tag,
             };
             return item;
           }
