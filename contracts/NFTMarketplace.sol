@@ -4,12 +4,34 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
+interface IERC20 {
+    function transfer(address payable to, uint256 amount)
+        external
+        returns (bool);
+
+    function balanceOf(address) external returns (uint256);
+
+    function approve(address spender, uint256 amount) external returns (bool);
+
+    function transferFrom(
+        address from,
+        address to,
+        uint256 amount
+    ) external;
+
+    function totalSupply() external returns (uint256);
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+}
+
 contract NFTMarketplace is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
     address owner;
     uint256 feePrice = 0.01 ether;
+    uint256 reward = 0.001 ether;
+    IERC20 token;
 
     struct ListedNFT {
         uint256 tokenId;
@@ -38,8 +60,11 @@ contract NFTMarketplace is ERC721URIStorage {
         _;
     }
 
-    constructor(address _owner) ERC721("NFTify NFT", "NFY") {
+    constructor(address _owner, address _tokenAdress)
+        ERC721("NFTify NFT", "NFY")
+    {
         owner = _owner;
+        token = IERC20(_tokenAdress);
     }
 
     function setFeePrice(uint256 _newFee) public onlyOwner {
@@ -143,6 +168,7 @@ contract NFTMarketplace is ERC721URIStorage {
         require(!userLikedItem[_tokenID][msg.sender]);
         ListedNFTId[_tokenID].likes += 1;
         userLikedItem[_tokenID][msg.sender] = true;
+        token.transfer(payable(ListedNFTId[_tokenID].seller), reward);
     }
 
     function excuteSale(uint256 _tokenID) public payable {

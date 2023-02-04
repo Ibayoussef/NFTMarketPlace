@@ -11,8 +11,15 @@ describe("Deploy", function () {
     connectUser2;
   beforeEach(async () => {
     [owner, addr1, addr2] = await ethers.getSigners();
+    const MemeNation = await ethers.getContractFactory("MemeNation");
+    const memenation = await MemeNation.deploy(500000000, 600000000);
+
     const NFTMarketplace = await ethers.getContractFactory("NFTMarketplace");
-    nftmarketplace = await NFTMarketplace.deploy(owner.address);
+    nftmarketplace = await NFTMarketplace.deploy(
+      owner.address,
+      memenation.address
+    );
+    memenation.connect(owner).transfer(nftmarketplace.address, parseEther("5"));
     connectOwner = nftmarketplace.connect(owner);
     connectUser = nftmarketplace.connect(addr1);
     connectUser2 = nftmarketplace.connect(addr2);
