@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 const Wrapper = styled.div`
   background: #060b19;
@@ -126,6 +127,7 @@ const CopyRight = styled.div`
 function Footer() {
   const [feature, setFeature] = useState();
   const [roadmap, setRoadmap] = useState();
+  const navigate = useNavigate();
   useEffect(() => {
     const feature = document.querySelector("#feature");
     const roadmap = document.querySelector("#roadmap");
@@ -133,7 +135,7 @@ function Footer() {
       setFeature(feature);
       setRoadmap(roadmap);
     }
-  }, []);
+  }, [feature, roadmap]);
   return (
     <>
       <Wrapper>
@@ -147,9 +149,23 @@ function Footer() {
           </p>
         </div>
         <div className="links">
-          <p>Explore</p>
-          <p onClick={() => feature.scrollIntoView()}>Features</p>
-          <p onClick={() => roadmap.scrollIntoView()}>RoadMap</p>
+          <p onClick={() => navigate("/")}>Explore</p>
+          <p
+            onClick={() => {
+              navigate("/");
+              setTimeout(() => feature.scrollIntoView(), 1000);
+            }}
+          >
+            Features
+          </p>
+          <p
+            onClick={() => {
+              navigate("/");
+              setTimeout(() => roadmap.scrollIntoView(), 1000);
+            }}
+          >
+            RoadMap
+          </p>
         </div>
         <div className="contact">
           <div className="title">Stay Informed</div>

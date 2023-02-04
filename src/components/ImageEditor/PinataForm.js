@@ -128,6 +128,7 @@ function PinataForm() {
     name: "",
     description: "",
     price: 1,
+    image: "",
   });
   useEffect(() => {
     console.log(formData);
@@ -137,34 +138,45 @@ function PinataForm() {
   const [fileURL, setFileUrl] = useState("");
   const [metaDataUrl, setMetaDataUrl] = useState("");
   const handleSubmitNFT = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    const signer = provider.getSigner();
-
-    const contract = new ethers.Contract(
-      Address.address,
-      NFTMarketplace,
-      signer
-    );
     setLoading(true);
-    //Pull the deployed contract instance
-
-    const totalfee = await contract.connect(signer).callStatic.getFeePrice();
-
-    //massage the params to be sent to the create NFT request
-    const price = ethers.utils.parseUnits(formData.price.toString(), "ether");
-
     //actually create the NFT
-    let transaction = await contract
-      .connect(signer)
-      .createNFT(metaDataUrl, price, {
-        value: totalfee,
-      });
-    await transaction.wait();
-
-    setDone(true);
-    setFormData({ name: "", description: "", price: 0 });
   };
+  useEffect(() => {
+    const transaction = async () => {
+      if (metaDataUrl) {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+
+        const contract = new ethers.Contract(
+          Address.address,
+          NFTMarketplace,
+          signer
+        );
+
+        //Pull the deployed contract instance
+
+        const totalfee = await contract
+          .connect(signer)
+          .callStatic.getFeePrice();
+
+        //massage the params to be sent to the create NFT request
+        const price = ethers.utils.parseUnits(
+          formData.price.toString(),
+          "ether"
+        );
+        let transaction = await contract
+          .connect(signer)
+          .createNFT(metaDataUrl, price, {
+            value: totalfee,
+          });
+        await transaction.wait();
+        setDone(true);
+      }
+    };
+    transaction();
+  }, [metaDataUrl]);
+
   const metadata = JSON.stringify({
     name: "testname",
     keyvalues: {
@@ -204,7 +216,7 @@ function PinataForm() {
           }
           pinataOptions={pinataOptions}
           pinataMetaData={metadata}
-          nftDataJson={formData}
+          nftDataJson={{ ...formData, image: fileURL }}
           inputClassNames={"input"}
           NFTContractInteraction={() => handleSubmitNFT()}
           setMetaDataUrl={setMetaDataUrl}

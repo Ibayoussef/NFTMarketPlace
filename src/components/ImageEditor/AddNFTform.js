@@ -25,6 +25,12 @@ function AddNFTform({ setFormData, formData }) {
           setFormData({ ...formData, description: e.target.value })
         }
       />
+      <h1>Select a Tag For Your NFT:</h1>
+      <input
+        type="text"
+        placeholder="Enter Tag"
+        onChange={(e) => setFormData({ ...formData, tag: e.target.value })}
+      />
     </div>
   );
 }

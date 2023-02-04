@@ -1,31 +1,60 @@
-import styled from "styled-components";
-import Sidebar from "../components/Sidebar";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import NFTMarketplace from "../data/abi/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import Address from "../data/abi/contracts/NFTMarketplace.sol/Address.json";
-import NFT from "../components/NFT";
 import axios from "axios";
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+import NFT from "../components/NFT";
+
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-`;
-const NFTS = styled.div`
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
   flex-direction: column;
-
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  gap: 30px;
+  .grid {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 30px;
+    flex-wrap: wrap;
+    height: 100vh;
+  }
+  .creationtitle {
+    font-weight: 700;
+    font-size: 4rem;
+    line-height: 108%;
+    letter-spacing: 0.17em;
+    color: #ffffff;
+    text-shadow: 2px 2px 2px #7edbea;
+  }
+  .button {
+    background: #b33e92;
+    box-shadow: 2px 2px 2px #b33e92;
+    border-radius: 39px;
+    padding: 10px 26px;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 36px;
+    color: white;
+    transition: all 0.4s;
+    cursor: pointer;
+    text-shadow: 2px 2px 2px #7edbea;
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 2px 1px 2px #b33e92;
+    }
+    &:active {
+      transform: translateY(-1px);
+      box-shadow: 2px 1.5px 2px #b33e92;
+    }
+  }
 `;
 
-function Explore() {
+function Profile() {
   const [nfts, setNFTS] = useState([]);
-  const [like, setLike] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     const getNFTs = async () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -36,7 +65,7 @@ function Explore() {
         NFTMarketplace,
         signer
       );
-      let transaction = await contract.getAllNFTs();
+      let transaction = await contract.connect(signer).getUserNFTS();
 
       //Fetch all the details of every NFT from the contract and display
       const items = await Promise.all(
@@ -66,17 +95,23 @@ function Explore() {
       setNFTS(items.filter((p) => p));
     };
     getNFTs();
-  }, [like]);
+  }, []);
   return (
     <Wrapper>
-      <Sidebar />
-      <NFTS>
-        {nfts.map((nft) => (
-          <NFT key={nft.tokenId} item={nft} setLike={setLike} like={like} />
-        ))}
-      </NFTS>
+      <button className="button" onClick={() => navigate("/create")}>
+        CREATE AN NFT
+      </button>
+      <div className="grid">
+        {nfts.length === 0 && (
+          <h1 className="creationtitle">
+            Create Your First NFT Meme Right Now!
+          </h1>
+        )}
+        {nfts.length !== 0 &&
+          nfts.map((nft) => <NFT key={nft.tokenId} item={nft} />)}
+      </div>
     </Wrapper>
   );
 }
 
-export default Explore;
+export default Profile;

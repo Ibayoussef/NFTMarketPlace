@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { useNavigate } from "react-router-dom";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -50,6 +50,7 @@ const Wrapper = styled.div`
 `;
 
 function Introduction() {
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <h1 className="title">Discover The Future Of Memes</h1>
@@ -58,7 +59,9 @@ function Introduction() {
         you can unleash your creativity and turn your memes into unique,
         one-of-a-kind digital assets that you can own, sell, and profit from.
       </h2>
-      <div className="explore">EXPLORE</div>
+      <div onClick={() => navigate("/explore")} className="explore">
+        EXPLORE
+      </div>
     </Wrapper>
   );
 }
