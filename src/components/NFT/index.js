@@ -5,6 +5,7 @@ import share from "../../assets/share.svg";
 import { ethers } from "ethers";
 import NFTMarketplace from "../../data/abi/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import Address from "../../data/abi/contracts/NFTMarketplace.sol/Address.json";
+import { formatDistanceToNow, fromUnixTime } from "date-fns";
 const Wrapper = styled.div`
 .owner-container {
     display: flex;
@@ -13,6 +14,13 @@ const Wrapper = styled.div`
     justify-content: flex-start,
     align-items: center;
     align-self: center;
+    .time {
+      font-weight: 700;
+font-size: 0.4rem;
+line-height: 21px;
+
+color: #1F607A;
+    }
     .avatar {
         background: linear-gradient(139.9deg, #7F16E3 22.86%, #3DC8DF 94.38%);
         border-radius: 100%;
@@ -21,20 +29,30 @@ const Wrapper = styled.div`
     }
     .owner {
         font-weight: 700;
-        font-size: 16px;
+        font-size: 0.6rem;
         line-height: 24px;
         color: #FFFFFF;
     }
 }
 .name, .desc {
     font-weight: 700;
-font-size: 24px;
+font-size: 0.9rem;
 line-height: 36px;
 color: #FFFFFF;
 }
-.nft-img {
-    width: 790px;
+.img-container {
+  position: relative;
+  width: 500px;
 height: 711px;
+background: black;
+}
+.nft-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 .buttons {
     display: flex;
@@ -62,7 +80,7 @@ height: 711px;
 border-radius: 6px;
 background: transparent;
 font-weight: 700;
-font-size: 14px;
+font-size: 0.5rem;
 line-height: 21px;
 color: rgba(31, 96, 122, 0.65);
 cursor: pointer;
@@ -90,14 +108,14 @@ transition: all 0.4s;
         background: #1F607A;
 border-radius: 6px;
 font-weight: 700;
-font-size: 14px;
+font-size: 0.5rem;
 line-height: 21px;
 padding: 4px 14px;
 color: #FFFFFF;
     }
     p {
         font-weight: 700;
-font-size: 14px;
+font-size: 0.5rem;
 line-height: 21px;
 color: #1F607A;
     }
@@ -128,10 +146,16 @@ function NFT({ item, setLike, like }) {
       <div className="owner-container">
         <div className="avatar"></div>
         <p className="owner">{item.seller.slice(0, 5)}</p>
+        <p className="time">
+          {formatDistanceToNow(fromUnixTime(item.created))}
+        </p>
       </div>
       <h1 className="name">{item.name}</h1>
       <h2 className="desc">{item.description}</h2>
-      <img className="nft-img" src={item.image} alt="nft" />
+      <div className="img-container">
+        <img className="nft-img" src={item.image} alt="nft" />
+      </div>
+
       <div className="buttons">
         <button className="like" onClick={() => handleLike(item.tokenId)}>
           <svg

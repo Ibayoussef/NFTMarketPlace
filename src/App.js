@@ -1,6 +1,6 @@
-import { Outlet, Router, Routes, Route } from "react-router-dom";
+import { Outlet, Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
-import { Home, Create, Explore, Profile } from "./pages";
+import { Home, Create, Explore, Profile, Swap } from "./pages";
 import Navbar from "./components/Navbar";
 const Layout = () => (
   <>
@@ -18,6 +18,7 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="explore" element={<Explore />} />
           <Route path="create" element={<Create />} />
+          <Route path="swap" element={<Swap />} />
         </Route>
       </Routes>
     </>

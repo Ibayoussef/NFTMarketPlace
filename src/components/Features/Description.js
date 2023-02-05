@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   color: white;
   width: 50%;
   .mt-39 {
-    margin-top: 39px;
+    margin-top: 1.5rem;
   }
   .mt-13 {
     margin-top: 13px;
@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   .title,
   .minititle {
     font-weight: 600;
-    font-size: 40px;
+    font-size: 1.2rem;
     line-height: 108%;
     text-align: center;
     letter-spacing: 0.17em;
@@ -28,11 +28,11 @@ const Wrapper = styled.div`
     text-shadow: 2px 2px 2px #7edbea;
   }
   .minititle {
-    font-size: 24px;
+    font-size: 0.7rem;
   }
   .slogan {
     font-weight: 400;
-    font-size: 24px;
+    font-size: 0.7rem;
     line-height: 36px;
   }
   .button {
@@ -41,7 +41,7 @@ const Wrapper = styled.div`
     border-radius: 39px;
     padding: 10px 26px;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 0.7rem;
     line-height: 36px;
     color: white;
     transition: all 0.4s;

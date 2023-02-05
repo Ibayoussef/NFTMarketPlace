@@ -6,6 +6,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import NFT from "../components/NFT";
+import { useSelector } from "react-redux";
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,7 +24,7 @@ const Wrapper = styled.div`
   }
   .creationtitle {
     font-weight: 700;
-    font-size: 4rem;
+    font-size: 2rem;
     line-height: 108%;
     letter-spacing: 0.17em;
     color: #ffffff;
@@ -54,6 +55,7 @@ const Wrapper = styled.div`
 
 function Profile() {
   const [nfts, setNFTS] = useState([]);
+  const { account } = useSelector((state) => state.web3);
   const navigate = useNavigate();
   useEffect(() => {
     const getNFTs = async () => {
@@ -95,7 +97,7 @@ function Profile() {
       setNFTS(items.filter((p) => p));
     };
     getNFTs();
-  }, []);
+  }, [account]);
   return (
     <Wrapper>
       <button className="button" onClick={() => navigate("/create")}>

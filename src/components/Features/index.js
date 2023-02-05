@@ -7,12 +7,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 10px;
+  gap: 30px;
   align-items: center;
   height: 100vh;
-  * {
-    margin-top: 50px;
-  }
+
   background: linear-gradient(
     180deg,
     rgba(177, 62, 179, 0) 0%,
@@ -20,18 +18,33 @@ const Wrapper = styled.div`
     rgba(177, 62, 179, 0.26) 59.9%,
     rgba(35, 31, 58, 0.77) 100%
   );
-  img {
+  .img-container {
+    position: relative;
+    object-fit: cover;
+    width: 50%;
+    height: 100%;
     border: 8px solid #8c308d;
     border-radius: 67px;
-    position: relative;
-    left: -47px;
+    overflow: hidden;
+    img {
+      position: absolute;
+      object-fit: cover;
+
+      top: 0px;
+
+      height: 100%;
+      width: 100%;
+    }
   }
 `;
 
 function Features() {
   return (
     <Wrapper id="feature">
-      <img src={mascot} alt="mascot" />
+      <div className="img-container">
+        <img src={mascot} alt="mascot" />
+      </div>
+
       <Description />
     </Wrapper>
   );

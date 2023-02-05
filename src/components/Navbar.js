@@ -14,22 +14,24 @@ const Nav = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 20px;
+
   z-index: 99999;
   width: 100%;
+
   .rightside,
   .leftside {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
     gap: 17px;
+    width: ${(props) => (props.explorepage ? "100%" : "30%")};
     p,
     a {
       font-weight: 700;
-      font-size: 24px;
+      font-size: 0.7rem;
       position: relative;
-      top: -5.5px;
+
       line-height: 36px;
       cursor: pointer;
       color: #ffffff;
@@ -46,22 +48,28 @@ const Nav = styled.div`
       }
     }
   }
+  .rightside {
+    justify-content: flex-end;
+  }
   flex-direction: row;
   background-color: transparent;
   img {
     cursor: pointer;
+    position: relative;
+    top: 5px;
   }
   .links {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
+    justify-content: center;
+    flex-direction: row;
     display: flex;
     gap: 50px;
+    width: 100%;
+    align-self: center;
     p,
     a {
       font-weight: 700;
-      font-size: 24px;
+      font-size: 1rem;
       line-height: 36px;
       cursor: pointer;
       color: #ffffff;
@@ -85,9 +93,10 @@ const Nav = styled.div`
     box-shadow: 2px 2px 2px #b33e92;
     border-radius: 39px;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 1rem;
     line-height: 36px;
     padding: 6px 36px;
+    width: fit-content;
     color: #ffffff;
     cursor: pointer;
     transition: all 0.4s;
@@ -109,6 +118,7 @@ function Navbar() {
   const location = useLocation();
   const explorepage = location.pathname === "/explore";
   const createpage = location.pathname === "/create";
+  const profilepage = location.pathname === "/profile";
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { account } = useSelector((state) => state.web3);
@@ -124,6 +134,12 @@ function Navbar() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
+
+    window.ethereum.on("accountsChanged", (accounts) => {
+      dispatch(
+        storeSigner({ account: accounts[0], signer: signer.toString() })
+      );
+    });
     const account = await signer.getAddress();
     const contract = new ethers.Contract(
       Address.address,
@@ -135,7 +151,7 @@ function Navbar() {
   };
 
   return (
-    <Nav>
+    <Nav explorepage={explorepage}>
       <div className="leftside">
         <img onClick={() => navigate("/")} src={logo} alt="logo" />
         {explorepage && (
@@ -149,42 +165,26 @@ function Navbar() {
         )}
       </div>
 
-      {!explorepage && (
+      {!explorepage && !createpage && !profilepage && (
         <div className="links">
           <p onClick={() => navigate("/explore")}>Explore</p>
 
-          {!createpage && (
-            <>
-              {" "}
-              <p
-                onClick={() => {
-                  navigate("/");
-                  setTimeout(() => feature.scrollIntoView(), 1000);
-                }}
-              >
-                Features
-              </p>
-              <p
-                onClick={() => {
-                  navigate("/");
-                  setTimeout(() => roadmap.scrollIntoView(), 1000);
-                }}
-              >
-                RoadMap
-              </p>
-            </>
-          )}
-          {createpage && (
-            <>
-              <p
-                onClick={() => {
-                  navigate("/profile");
-                }}
-              >
-                Profile
-              </p>
-            </>
-          )}
+          <p
+            onClick={() => {
+              navigate("/");
+              setTimeout(() => feature.scrollIntoView(), 1000);
+            }}
+          >
+            Features
+          </p>
+          <p
+            onClick={() => {
+              navigate("/");
+              setTimeout(() => roadmap.scrollIntoView(), 1000);
+            }}
+          >
+            RoadMap
+          </p>
         </div>
       )}
       <div className="rightside">
@@ -194,6 +194,36 @@ function Navbar() {
             <img src={bell} alt="notif" />
           </>
         )}
+        {(createpage || profilepage) && (
+          <>
+            <p
+              onClick={() => {
+                navigate("/explore");
+              }}
+            >
+              Explore
+            </p>
+          </>
+        )}
+        {!explorepage && account && (
+          <>
+            <p
+              onClick={() => {
+                navigate("/swap");
+              }}
+            >
+              Swap
+            </p>
+            <p
+              onClick={() => {
+                navigate("/profile");
+              }}
+            >
+              Profile
+            </p>
+          </>
+        )}
+        {(createpage || profilepage) && <img src={bell} alt="notif" />}
         <button onClick={() => handleConnect()} className="connect">
           {account ? account.slice(0, 5) : "Connect"}
         </button>

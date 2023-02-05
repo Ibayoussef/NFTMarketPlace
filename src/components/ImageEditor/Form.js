@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   height: 75vh;
   .titles {
     font-weight: 700;
-    font-size: 14px;
+    font-size: 0.6rem;
     line-height: 21px;
     color: #ffffff;
   }
@@ -51,7 +51,7 @@ const Wrapper = styled.div`
     }
     p {
       font-weight: 700;
-      font-size: 16px;
+      font-size: 0.8rem;
       line-height: 24px;
       display: flex;
       align-items: center;
@@ -69,7 +69,7 @@ const Wrapper = styled.div`
         font-weight: 700;
         width: 400px;
         height: 70px;
-        font-size: 16px;
+        font-size: 0.6rem;
         line-height: 24px;
         padding-left: 20px;
         color: #000000;
@@ -113,7 +113,7 @@ const Wrapper = styled.div`
       .value {
         background: #1f607a;
         border-radius: 6px;
-
+        font-size: 0.6rem;
         width: fit-content;
         padding: 4px 14px;
         color: #fff;
@@ -242,7 +242,7 @@ input[type="number"]:focus {
     background: #b13eb3;
     border-radius: 30px;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 0.6rem;
     line-height: 24px;
     padding: 12px 14px;
     color: #ffffff;

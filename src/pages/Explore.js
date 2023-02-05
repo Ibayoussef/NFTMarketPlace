@@ -2,20 +2,25 @@ import styled from "styled-components";
 import Sidebar from "../components/Sidebar";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
+import { useDispatch, useSelector } from "react-redux";
+
 import NFTMarketplace from "../data/abi/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import Address from "../data/abi/contracts/NFTMarketplace.sol/Address.json";
 import NFT from "../components/NFT";
 import axios from "axios";
+import { storeNFTS } from "../reducers/web3Reducer";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
+
   align-items: flex-start;
-  width: 70%;
+  width: 100%;
 `;
 const NFTS = styled.div`
   position: relative;
   gap: 30px;
+  width: 100%;
   display: flex;
   flex-direction: column;
 
@@ -24,8 +29,13 @@ const NFTS = styled.div`
 `;
 
 function Explore() {
-  const [nfts, setNFTS] = useState([]);
+  const { nfts, filteredNfts, search, filterStatus } = useSelector(
+    (state) => state.web3
+  );
   const [like, setLike] = useState(false);
+  const filterCondition = search || filterStatus;
+  const nftArray = filterCondition ? filteredNfts : nfts;
+  const dispatch = useDispatch();
   useEffect(() => {
     const getNFTs = async () => {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -54,6 +64,7 @@ function Explore() {
               seller: i.seller,
               owner: i.owner,
               likes: i.likes.toNumber(),
+              created: i.created.toNumber(),
               image: meta.image,
               name: meta.name,
               description: meta.description,
@@ -63,8 +74,8 @@ function Explore() {
           }
         })
       );
-      console.log(items.filter((p) => p));
-      setNFTS(items.filter((p) => p));
+
+      dispatch(storeNFTS(items.filter((p) => p)));
     };
     getNFTs();
   }, [like]);
@@ -72,7 +83,7 @@ function Explore() {
     <Wrapper>
       <Sidebar />
       <NFTS>
-        {nfts.map((nft) => (
+        {nftArray.map((nft) => (
           <NFT key={nft.tokenId} item={nft} setLike={setLike} like={like} />
         ))}
       </NFTS>

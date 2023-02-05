@@ -10,25 +10,28 @@ const Wrapper = styled.div`
   align-items: center;
   padding: 34px 0;
   .about {
+    img {
+      width: 100%;
+    }
     width: 30%;
     p {
       font-weight: 700;
-      font-size: 16px;
+      font-size: 0.5rem;
       line-height: 24px;
       color: white;
     }
   }
 
   .links {
-    justify-content: center;
-    align-items: flex-start;
+    justify-content: flex-start;
+    align-items: center;
     flex-direction: column;
     display: flex;
     width: 30%;
     gap: 20px;
     p {
       font-weight: 700;
-      font-size: 24px;
+      font-size: 0.8rem;
       line-height: 36px;
       cursor: pointer;
       color: #ffffff;
@@ -50,21 +53,23 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    width: 30%;
     gap: 10px;
     .title {
       font-weight: 700;
-      font-size: 24px;
+      font-size: 0.9rem;
       line-height: 36px;
       color: #ffffff;
     }
     .desc {
       font-weight: 700;
-      font-size: 16px;
+      font-size: 0.6rem;
       line-height: 24px;
       color: #ffffff;
     }
     .inputbox {
       position: relative;
+      width: 100%;
       button {
         background: #b13eb3;
         border-radius: 30px;
@@ -73,7 +78,7 @@ const Wrapper = styled.div`
         transform: translateY(-50%);
         right: 17px;
         font-weight: 700;
-        font-size: 16px;
+        font-size: 0.5rem;
         line-height: 24px;
         color: #ffffff;
         padding: 12px 20px;
@@ -92,16 +97,16 @@ const Wrapper = styled.div`
         color: black;
         background: #ffffff;
         border-radius: 30px;
-        width: 382px;
+        width: 100%;
         height: 67px;
         padding: 0px 26px;
         font-weight: 700;
-        font-size: 16px;
+        font-size: 0.5rem;
         line-height: 24px;
         color: #000000;
         &:placeholder {
           font-weight: 700;
-          font-size: 16px;
+          font-size: 0.5rem;
           line-height: 24px;
           color: #000000;
         }
@@ -149,7 +154,7 @@ function Footer() {
           </p>
         </div>
         <div className="links">
-          <p onClick={() => navigate("/")}>Explore</p>
+          <p onClick={() => navigate("/explore")}>Explore</p>
           <p
             onClick={() => {
               navigate("/");

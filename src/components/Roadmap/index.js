@@ -2,6 +2,14 @@ import styled from "styled-components";
 import tower from "../../assets/tower.jpg";
 import Bubble from "./Bubble";
 const Wrapper = styled.div`
+  .bubbles {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 200px;
+    gap: 10rem;
+  }
   .titlewrapper {
     display: flex;
     width: 100%;
@@ -37,10 +45,11 @@ const Wrapper = styled.div`
     position: relative;
     object-fit: cover;
     width: 100%;
-    height: 3000px;
+    height: 300vh;
     img {
       animation: saturate 3s infinite;
       position: absolute;
+      object-fit: cover;
       top: 0;
       left: 0;
       width: 100%;
@@ -53,38 +62,38 @@ function Roadmap() {
   const roadmapData = [
     {
       title: "Q1 2023:",
-      mt: "250px",
-      ml: "250px",
-      arrowParams: { mt: "40px", ml: "360px", rotate: "rotate(149deg)" },
+      mt: "0",
+      ml: "0",
+      arrowParams: { mt: "220px", ml: "410px", rotate: "rotate(149deg)" },
       desc: "Launch of MemeNation beta version with core features, including meme creation, NFT minting, and in-app currency (Memenation Tokens)Onboarding of early adopters and testing of platform functionality",
     },
     {
       title: "Q2 2023:",
-      mt: "750px",
-      ml: "1300px",
-      arrowParams: { mt: "-10px", ml: "-70px", rotate: "rotate(-149deg)" },
+      mt: "0",
+      ml: "0",
+      arrowParams: { mt: "220px", ml: "-30px", rotate: "rotate(-149deg)" },
       desc: "Rollout of marketplace functionality, allowing users to buy and sell NFTs. Expansion of community features, including social sharing, profiles, and user-generated content. Partnership with key influencers and meme makers to drive adoption and usage.",
     },
     {
       title: "Q3 2023:",
-      mt: "1300px",
-      ml: "200px",
-      arrowParams: { mt: "10px", ml: "360px", rotate: "rotate(149deg)" },
+      mt: "0",
+      ml: "0",
+      arrowParams: { mt: "220px", ml: "410px", rotate: "rotate(149deg)" },
       desc: "Introduction of new NFT categories, including custom stickers, animations, and audio memes. Launch of mobile app to increase accessibility and engagement. Expansion of partnership program to include strategic brands and advertisers.",
     },
     {
       title: "Q4 2023:",
-      mt: "1500px",
-      ml: "70%",
-      arrowParams: { mt: "-10px", ml: "-70px", rotate: "rotate(-149deg)" },
+      mt: "0",
+      ml: "0",
+      arrowParams: { mt: "220px", ml: "-30px", rotate: "rotate(-149deg)" },
       desc: "Integration of additional blockchain protocols to increase NFT interoperability and liquidity. Launch of creator incentives program to reward top performers and foster growth of the platform. Expansion into new international markets to reach a wider audience.",
     },
     {
       title: "2024 and beyond:",
-      mt: "2000px",
-      ml: "200px",
+      mt: "0",
+      ml: "0",
 
-      arrowParams: { mt: "10px", ml: "360px", rotate: "rotate(149deg)" },
+      arrowParams: { mt: "220px", ml: "410px", rotate: "rotate(149deg)" },
       desc: "Continual innovation and improvements to the platform, including new features and functionalities based on user feedback and market trends. Expansion into additional NFT-related use cases and markets, including gaming and collectibles.",
     },
   ];
@@ -95,16 +104,18 @@ function Roadmap() {
       </div>
 
       <div className="roadmap">
-        {roadmapData.map((data) => (
-          <Bubble
-            key={data.title}
-            arrowParams={data.arrowParams}
-            mt={data.mt}
-            ml={data.ml}
-            title={data.title}
-            desc={data.desc}
-          />
-        ))}
+        <div className="bubbles">
+          {roadmapData.map((data) => (
+            <Bubble
+              key={data.title}
+              arrowParams={data.arrowParams}
+              mt={data.mt}
+              ml={data.ml}
+              title={data.title}
+              desc={data.desc}
+            />
+          ))}
+        </div>
 
         <img src={tower} alt="tower" />
       </div>

@@ -7,6 +7,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
+  width: 100%;
   .elipse {
     position: absolute;
     z-index: 1000;
@@ -19,8 +20,19 @@ const Wrapper = styled.div`
     border-radius: 100%;
     border-top: 6px solid #b33e92;
   }
+  .img-container {
+    position: relative;
+    object-fit: cover;
+    width: 60%;
+  }
   img {
+    position: absolute;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    height: 100%;
     height: 100vh;
+    width: 100%;
   }
 `;
 
@@ -28,7 +40,10 @@ function Header() {
   return (
     <Wrapper>
       <Introduction />
-      <img src={headerimg} alt="header-img" />
+      <div className="img-container">
+        <img src={headerimg} alt="header-img" />
+      </div>
+
       <div className="elipse"></div>
     </Wrapper>
   );

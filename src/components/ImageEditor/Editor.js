@@ -9,7 +9,8 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: flex-start;
   margin-top: 47px;
-  object-fit: cover;
+  flex-wrap: wrap;
+
   .image {
     position: relative;
    

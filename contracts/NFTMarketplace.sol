@@ -39,12 +39,13 @@ contract NFTMarketplace is ERC721URIStorage {
         address seller;
         uint256 price;
         uint256 likes;
+        uint256 created;
         bool isListed;
     }
 
     mapping(uint256 => ListedNFT) public ListedNFTId;
     mapping(address => uint256) userSoldItems;
-    mapping(uint256 => mapping(address => bool)) userLikedItem;
+    mapping(uint256 => mapping(address => bool)) public userLikedItem;
 
     event ListingNFT(
         uint256 indexed tokenId,
@@ -115,6 +116,7 @@ contract NFTMarketplace is ERC721URIStorage {
             seller: msg.sender,
             price: _price,
             likes: 0,
+            created: block.timestamp,
             isListed: true
         });
         _transfer(payable(msg.sender), address(this), _tokenID);
@@ -181,5 +183,15 @@ contract NFTMarketplace is ERC721URIStorage {
         approve(address(this), _tokenID);
         payable(owner).transfer(feePrice);
         payable(seller).transfer(price);
+    }
+
+    function swapETHbyTKN() public payable {
+        payable(address(this)).transfer(msg.value);
+        token.transfer(payable(msg.sender), msg.value * 1000000);
+    }
+
+    function swapTKNbyETH() public payable {
+        payable(msg.sender).transfer(msg.value / 100000);
+        token.transfer(payable(address(this)), msg.value);
     }
 }

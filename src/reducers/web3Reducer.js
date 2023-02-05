@@ -4,6 +4,10 @@ const initialState = {
   signer: "",
   contract: "",
   account: "",
+  nfts: [],
+  search: "",
+  filteredNfts: [],
+  filterStatus: "",
 };
 
 export const web3Slice = createSlice({
@@ -17,9 +21,41 @@ export const web3Slice = createSlice({
     storeContract: (state, action) => {
       state.contract = action.payload;
     },
+    storeNFTS: (state, action) => {
+      state.nfts = action.payload;
+    },
+    filterNFTs: (state, action) => {
+      const filteredNfts = state.nfts.filter((nft) => {
+        return nft.name.toLowerCase().includes(action.payload.toLowerCase());
+      });
+      state.search = action.payload;
+      state.filteredNfts = filteredNfts;
+    },
+    storeFilterStatus: (state, action) => {
+      state.filterStatus = action.payload.status;
+      if (action.payload.status === "trending") {
+        state.filteredNfts = state.nfts.sort(function (a, b) {
+          return b.likes - a.likes;
+        });
+      }
+      if (action.payload.status === "favorites") {
+        state.filteredNfts = action.payload.filter;
+      }
+      if (action.payload.status === "fresh") {
+        state.filteredNfts = state.nfts.sort(function (a, b) {
+          return b.created - a.created;
+        });
+      }
+    },
   },
 });
 
-export const { storeSigner, storeContract } = web3Slice.actions;
+export const {
+  storeSigner,
+  storeContract,
+  storeNFTS,
+  filterNFTs,
+  storeFilterStatus,
+} = web3Slice.actions;
 
 export default web3Slice.reducer;

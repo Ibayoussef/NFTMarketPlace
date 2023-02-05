@@ -12,12 +12,13 @@ import image from "../../assets/image.svg";
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
-  flex-wrap: no-wrap;
+  flex-wrap: wrap;
   display: flex;
+  gap: 40px;
   margin-top: 20px;
   flex-direction: row;
   justify-content: center; 
-  align-items: center;
+  align-items: flex-start;
   .icon {
     position: absolute;
     bottom: 85px;
@@ -29,9 +30,10 @@ const Wrapper = styled.div`
   .loader {
     position: fixed;
     width: 100%;
-    height: 200vh;
+    height: 300vh;
     background-color: black;
-    z-index: 9999999999;
+    margin-top: -200px;
+    z-index: 999999999999;
   }
   .form {
     width: 30%;
@@ -39,7 +41,7 @@ const Wrapper = styled.div`
   }
   h1 {
     font-weight: 700;
-    font-size: 14px;
+    font-size: 0.45rem;
     line-height: 21px;
     color: #ffffff;
     padding-left: 20px;
@@ -50,7 +52,7 @@ const Wrapper = styled.div`
     border: 1px solid #b33e92;
     border-radius: 33px;
     font-weight: 700;
-    width: 400px;
+    width: 100%;
     height: 70px;
     font-size: 16px;
     line-height: 24px;
@@ -58,7 +60,7 @@ const Wrapper = styled.div`
     color: #000000;
     &:placeholder {
       font-weight: 700;
-      font-size: 16px;
+      font-size: 0.4rem;
       line-height: 24px;
       display: flex;
       align-items: center;
@@ -98,7 +100,7 @@ const Wrapper = styled.div`
     background: #b13eb3;
     border-radius: 30px;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 0.5rem;
     line-height: 24px;
     padding: 12px 14px;
     color: #ffffff;

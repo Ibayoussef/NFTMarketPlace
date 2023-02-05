@@ -7,12 +7,12 @@ const Wrapper = styled.div`
   align-items: flex-start;
   background-color: #060b19;
   padding: 0px 20px;
-
+  width: 50%;
   height: 100vh;
   gap: 44px;
   .title {
     font-weight: 700;
-    font-size: 4rem;
+    font-size: 2rem;
     line-height: 108%;
     letter-spacing: 0.17em;
     color: #ffffff;
@@ -20,7 +20,7 @@ const Wrapper = styled.div`
   }
   .description {
     font-weight: 400;
-    font-size: 2rem;
+    font-size: 1rem;
     line-height: 48px;
     color: #ffffff;
   }
@@ -31,7 +31,7 @@ const Wrapper = styled.div`
     box-shadow: 2px 2px 2px #b33e92;
     border-radius: 39px;
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: 1rem;
     line-height: 36px;
     padding: 6px 36px;
     color: #ffffff;
