@@ -85,6 +85,7 @@ function Profile() {
               seller: i.seller,
               owner: i.owner,
               likes: i.likes.toNumber(),
+              created: i.created.toNumber(),
               image: meta.image,
               name: meta.name,
               description: meta.description,
