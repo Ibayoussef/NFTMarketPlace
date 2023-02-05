@@ -11,7 +11,7 @@ async function main() {
   );
   memenation
     .connect(deployer)
-    .transfer(nftmarketplace.address, parseEther("5"));
+    .transfer(nftmarketplace.address, parseEther("5000000"));
   console.log("Contract deployed to address: " + nftmarketplace.address);
   console.log("Coin deployed to address: " + memenation.address);
 }

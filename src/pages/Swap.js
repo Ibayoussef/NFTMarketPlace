@@ -10,9 +10,28 @@ const Wrapper = styled.div`
   background: #000;
   height: 100vh;
   position: relative;
+  .swapbutton {
+    position: absolute;
+    border-radius: 10px;
+    background: #9302cc;
+    width: 30px;
+    height: 30px;
+    top: 46.5%;
+    z-index: 99999;
+    transform: translateY(-50%);
+    cursor: pointer;
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      padding: 5px;
+    }
+  }
   .swap-container {
     position: absolute;
-    background: #9302cc;
+    background: #111;
     border: 3px solid #000;
     border-radius: 20px;
     top: 50%;
@@ -27,12 +46,7 @@ const Wrapper = styled.div`
     width: 50%;
     height: 50%;
     transform: translate(-50%, -50%);
-    > img,
-    button {
-      position: relative;
-      left: -25px;
-      cursor: pointer;
-    }
+
     text-shadow: 0 0 10px #9302cc;
     animation: shadow 3s infinite;
     box-shadow: 0 0 60px #9302cc;
@@ -45,32 +59,44 @@ const Wrapper = styled.div`
         box-shadow: 0 0 20px #9302cc;
       }
     }
+    .button-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     button {
-      margin-left: 10px;
       margin-top: 20px;
-      background: black;
+      background: #9302cc;
       border-radius: 30px;
       font-weight: 700;
       font-size: 0.5rem;
       line-height: 24px;
       padding: 12px 14px;
       color: #ffffff;
+      cursor: pointer;
     }
     .first {
       display: flex;
       flex-direction: row;
       justify-content: center;
       align-items: center;
+      position: relative;
       gap: 20px;
       img {
-        width: 31px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 10px;
+        width: 40px;
+        height: 30px;
       }
     }
     input {
-      margin: 20px 0px;
+      margin: 5px 0px;
       background: #ffffff;
       border: 1px solid #b33e92;
-      border-radius: 33px;
+      border-radius: 10px;
       font-weight: 700;
       width: 100%;
       height: 70px;
@@ -93,7 +119,7 @@ const Wrapper = styled.div`
 `;
 
 function Swap() {
-  const [ethvalue, setEthValue] = useState("");
+  const [ethvalue, setEthValue] = useState("0");
   const [flip, setFlip] = useState(false);
   const handleSwap = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -105,14 +131,14 @@ function Swap() {
       signer
     );
     if (!flip) {
-      let transaction = await contract
-        .connect(signer)
-        .swapETHbyTKN({ value: parseInt(ethvalue) });
+      let transaction = await contract.connect(signer).swapETHbyTKN({
+        value: ethers.utils.parseUnits(ethvalue, "ether"),
+      });
       await transaction.wait();
     } else {
       let transaction = await contract
         .connect(signer)
-        .swapTKNbyETH({ value: parseInt(ethvalue) });
+        .swapTKNbyETH(ethers.utils.parseUnits(ethvalue, "ether"));
       await transaction.wait();
     }
   };
@@ -141,7 +167,10 @@ function Swap() {
             <img src={mmn} alt="mmn" />
           </div>
         )}
-        <img onClick={() => setFlip(!flip)} src={switchpc} alt="switch" />
+        <div className="swapbutton">
+          <img onClick={() => setFlip(!flip)} src={switchpc} alt="switch" />
+        </div>
+
         {!flip && (
           <div className="first">
             <input type="text" disabled value={parseInt(ethvalue * 100000)} />
@@ -150,11 +179,17 @@ function Swap() {
         )}
         {flip && (
           <div className="first">
-            <input type="text " disabled value={parseInt(ethvalue) / 100000} />
+            <input
+              type="text "
+              disabled
+              value={(parseInt(ethvalue) / 100000).toString()}
+            />
             <img src={eth} alt="eth" />
           </div>
         )}
-        <button onClick={() => handleSwap()}>Swap</button>
+        <div className="button-container">
+          <button onClick={() => handleSwap()}>Swap</button>
+        </div>
       </div>
     </Wrapper>
   );

@@ -8,18 +8,21 @@ describe("Deploy", function () {
     nftmarketplace,
     connectOwner,
     connectUser,
+    memenation,
     connectUser2;
   beforeEach(async () => {
     [owner, addr1, addr2] = await ethers.getSigners();
     const MemeNation = await ethers.getContractFactory("MemeNation");
-    const memenation = await MemeNation.deploy(500000000, 600000000);
+    memenation = await MemeNation.deploy(500000000, 600000000);
 
     const NFTMarketplace = await ethers.getContractFactory("NFTMarketplace");
     nftmarketplace = await NFTMarketplace.deploy(
       owner.address,
       memenation.address
     );
-    memenation.connect(owner).transfer(nftmarketplace.address, parseEther("5"));
+    memenation
+      .connect(owner)
+      .transfer(nftmarketplace.address, parseEther("50"));
     connectOwner = nftmarketplace.connect(owner);
     connectUser = nftmarketplace.connect(addr1);
     connectUser2 = nftmarketplace.connect(addr2);
@@ -87,5 +90,15 @@ describe("Deploy", function () {
       value: parseEther("1"),
     });
     await transaction.wait();
+  });
+  it("User can swap", async () => {
+    let transaction = await connectUser.swapETHbyTKN({
+      value: parseEther("0.00001"),
+    });
+
+    await transaction.wait();
+    expect(await memenation.balanceOf(addr1.address)).to.be.equal(
+      "1000000000000000000"
+    );
   });
 });

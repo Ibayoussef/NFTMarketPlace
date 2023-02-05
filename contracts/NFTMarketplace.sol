@@ -187,11 +187,13 @@ contract NFTMarketplace is ERC721URIStorage {
 
     function swapETHbyTKN() public payable {
         payable(address(this)).transfer(msg.value);
-        token.transfer(payable(msg.sender), msg.value * 1000000);
+        token.transfer(payable(msg.sender), msg.value * 100000);
     }
 
-    function swapTKNbyETH() public payable {
-        payable(msg.sender).transfer(msg.value / 100000);
-        token.transfer(payable(address(this)), msg.value);
+    function swapTKNbyETH(uint256 _amount) public {
+        payable(msg.sender).transfer((_amount / 100000));
+        token.transfer(payable(address(this)), _amount);
     }
+
+    receive() external payable {}
 }
