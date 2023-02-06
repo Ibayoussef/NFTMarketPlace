@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 import AddNFTform from "./AddNFTform";
 import { ethers } from "ethers";
@@ -9,6 +10,9 @@ import Address from "../../data/abi/contracts/NFTMarketplace.sol/Address.json";
 import NFTMarketplace from "../../data/abi/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import Loading from "../Loading";
 import image from "../../assets/image.svg";
+import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -19,6 +23,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: center; 
   align-items: flex-start;
+
   .icon {
     position: absolute;
     bottom: 85px;
@@ -38,6 +43,98 @@ const Wrapper = styled.div`
   .form {
     width: 30%;
     position: relative;
+    p {
+      color: white;
+      font-size: 0.6rem;
+      
+      padding: 10px 20px;
+    }
+     .texts-container {
+    .displaytexts {
+      display: flex;
+      width: 300px;
+      flex-direction: row;
+      gap: 5px;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      margin: 0 0 20px 20px;
+  
+      p {
+        padding: 0px !important;
+      }
+      .text {
+        background: #1f607a;
+        border-radius: 6px;
+
+        width: fit-content;
+        padding: 4px 14px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        button {
+          cursor: pointer;
+          background: transparent;
+          border: none;
+          margin-left: 10px;
+        }
+      }
+    }
+    p {
+      font-weight: 700;
+      font-size: 0.5rem;
+      line-height: 24px;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      padding-left: 20px;
+      color: #ffffff;
+    }
+    .textinput {
+      position: relative;
+
+      input {
+        background: #ffffff;
+        border: 1px solid #b33e92;
+        border-radius: 33px;
+        font-weight: 700;
+        width: 100%;
+        height: 70px;
+        font-size: 0.6rem;
+        line-height: 24px;
+        padding-left: 20px;
+        color: #000000;
+        &:placeholder {
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 24px;
+          display: flex;
+          align-items: center;
+          text-align: center;
+          color: #000000;
+        }
+      }
+      button {
+        position: absolute;
+        top: 50%;
+        right: 17px;
+        background: #b33e92;
+        border-radius: 56px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 15px;
+          height: 15px;
+        }
+      }
+    }
+  }
   }
   h1 {
     font-weight: 700;
@@ -123,6 +220,7 @@ const Wrapper = styled.div`
       object-fit: cover;
       left: 0;
     }}
+    
 `;
 
 function PinataForm() {
@@ -131,10 +229,9 @@ function PinataForm() {
     description: "",
     price: 1,
     image: "",
+    tags: [],
   });
-  useEffect(() => {
-    console.log(formData);
-  }, [formData]);
+  const { account } = useSelector((state) => state.web3);
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const [fileURL, setFileUrl] = useState("");
@@ -201,6 +298,21 @@ function PinataForm() {
       ],
     },
   });
+  useEffect(() => {
+    if (!account) {
+      return () =>
+        toast.error("Please Connect Your Wallet", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: false,
+          progress: undefined,
+          theme: "dark",
+        });
+    }
+  }, [account]);
   return (
     <Wrapper fileURL={fileURL}>
       {loading && (
@@ -209,6 +321,19 @@ function PinataForm() {
         </div>
       )}
       <div className="form">
+        {!account && <p>Connect your wallet to be able to mint</p>}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable={false}
+          pauseOnHover={false}
+          theme="dark"
+        />
         <img className="icon" src={image} alt="img" />
         <Pinata
           pinataJWT={PINATA_API_Key}

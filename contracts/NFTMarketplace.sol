@@ -195,5 +195,9 @@ contract NFTMarketplace is ERC721URIStorage {
         token.transfer(payable(address(this)), _amount);
     }
 
+    function userBalance() public returns (uint256) {
+        return token.balanceOf(msg.sender);
+    }
+
     receive() external payable {}
 }

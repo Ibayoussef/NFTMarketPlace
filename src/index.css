@@ -12,7 +12,9 @@ html {
   font-size: calc(16px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
 }
 
-
+.Toastify__toast-body div {
+  font-size: 0.6rem;
+}
 
 * {
   margin: 0;

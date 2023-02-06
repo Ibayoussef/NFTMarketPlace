@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  signer: "",
+  balance: "",
   contract: "",
   account: "",
   nfts: [],
@@ -15,7 +15,7 @@ export const web3Slice = createSlice({
   initialState,
   reducers: {
     storeSigner: (state, action) => {
-      state.signer = action.payload.signer;
+      state.balance = action.payload.balance;
       state.account = action.payload.account;
     },
     storeContract: (state, action) => {
@@ -45,6 +45,15 @@ export const web3Slice = createSlice({
         state.filteredNfts = state.nfts.sort(function (a, b) {
           return b.created - a.created;
         });
+      }
+      if (
+        action.payload.status !== "favorites" &&
+        action.payload.status !== "fresh" &&
+        action.payload.status !== "trending"
+      ) {
+        state.filteredNfts = state.nfts.filter((nft) =>
+          nft.tags.includes(action.payload.status)
+        );
       }
     },
   },

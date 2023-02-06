@@ -1,6 +1,8 @@
-import React from "react";
-
+import { useState } from "react";
+import add from "../../assets/add.svg";
+import remove from "../../assets/delete.svg";
 function AddNFTform({ setFormData, formData }) {
+  const [tag, setTag] = useState("");
   return (
     <div>
       <h1>Select a Name For Your NFT:</h1>
@@ -26,11 +28,46 @@ function AddNFTform({ setFormData, formData }) {
         }
       />
       <h1>Select a Tag For Your NFT:</h1>
-      <input
-        type="text"
-        placeholder="Enter Tag"
-        onChange={(e) => setFormData({ ...formData, tag: e.target.value })}
-      />
+
+      <div className="texts-container">
+        {" "}
+        <div className="textinput">
+          <input
+            type="text"
+            value={tag}
+            onChange={(e) => setTag(e.target.value)}
+            placeholder="Enter text to add"
+          />
+          <button
+            onClick={() =>
+              setFormData({
+                ...formData,
+                tags: [...formData.tags, tag],
+              })
+            }
+          >
+            <img src={add} alt="add" />
+          </button>
+        </div>
+        <div className="displaytexts">
+          {formData.tags.map((text, index) => (
+            <div key={index} className="text">
+              <p>{text}</p>
+
+              <button
+                onClick={() =>
+                  setFormData({
+                    ...formData,
+                    tags: formData.tags.filter((tag) => tag !== text),
+                  })
+                }
+              >
+                <img src={remove} alt="add" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

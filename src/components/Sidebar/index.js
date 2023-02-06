@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import trending from "../../assets/trending.svg";
@@ -37,16 +38,31 @@ const Wrapper = styled.div`
     &:hover {
       background: #1f607a;
     }
-
     p {
       font-weight: 700;
       font-size: 1rem;
       line-height: 36px;
+      width: 100%;
       text-transform: uppercase;
       color: #ffffff;
 
       text-shadow: 2px 2px 2px #7edbea;
     }
+  }
+  .category {
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 36px;
+    width: 100%;
+    cursor: pointer;
+    text-transform: uppercase;
+    color: #ffffff;
+    width: 100%;
+    text-align: center;
+    &:hover {
+      background: #1f607a;
+    }
+    text-shadow: 2px 2px 2px #7edbea;
   }
 `;
 
@@ -59,6 +75,7 @@ const links = [
 function Sidebar() {
   const { filterStatus, nfts, account } = useSelector((state) => state.web3);
   const [favFilter, setFavfilter] = useState([]);
+  const [categories, setCategories] = useState([]);
   const dispatch = useDispatch();
   const filterHandle = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -87,6 +104,11 @@ function Sidebar() {
   useEffect(() => {
     filterHandle();
   }, [account]);
+  useEffect(() => {
+    const array = [];
+    nfts.map((nft) => nft.tags.map((t) => array.push(t)));
+    setCategories(array);
+  }, [nfts]);
   return (
     <Wrapper>
       {links.map((link) => (
@@ -108,6 +130,23 @@ function Sidebar() {
           <p>{link.name}</p>
         </div>
       ))}
+      <p className="category">Categories</p>
+      {categories.length > 0 &&
+        categories.map((category) => (
+          <p
+            className={`category ${filterStatus === category ? "active" : ""}`}
+            onClick={() => {
+              dispatch(
+                storeFilterStatus({
+                  status: category,
+                })
+              );
+            }}
+            key={category}
+          >
+            {category}
+          </p>
+        ))}
     </Wrapper>
   );
 }

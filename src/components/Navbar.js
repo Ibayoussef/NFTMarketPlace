@@ -9,15 +9,25 @@ import { ethers } from "ethers";
 import NFTMarketplace from "../data/abi/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import Address from "../data/abi/contracts/NFTMarketplace.sol/Address.json";
 import bell from "../assets/bell.svg";
+import mmn from "../assets/mmn.svg";
 const Nav = styled.div`
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  z-index: 99999;
   width: 100%;
-
+  .balance {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    gap: 10px;
+    border-radius: 12px;
+    border: 1px solid #7edbea;
+    padding: 5px 20px;
+  }
   .rightside,
   .leftside {
     display: flex;
@@ -117,11 +127,11 @@ function Navbar() {
   const [roadmap, setRoadmap] = useState();
   const location = useLocation();
   const explorepage = location.pathname === "/explore";
-  const createpage = location.pathname === "/create";
-  const profilepage = location.pathname === "/profile";
+
+  const homepage = location.pathname === "/";
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { account } = useSelector((state) => state.web3);
+  const { account, balance } = useSelector((state) => state.web3);
   useEffect(() => {
     const feature = document.querySelector("#feature");
     const roadmap = document.querySelector("#roadmap");
@@ -134,38 +144,42 @@ function Navbar() {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner();
-
-    window.ethereum.on("accountsChanged", (accounts) => {
-      dispatch(
-        storeSigner({ account: accounts[0], signer: signer.toString() })
-      );
-    });
     const account = await signer.getAddress();
     const contract = new ethers.Contract(
       Address.address,
       NFTMarketplace,
       signer
     );
-    dispatch(storeSigner({ account: account, signer: signer.toString() }));
+
+    window.ethereum.on("accountsChanged", async (accounts) => {
+      const balance = await contract.connect(signer).callStatic.userBalance();
+      dispatch(
+        storeSigner({ account: accounts[0], balance: balance.toString() })
+      );
+    });
+    const balance = await contract.connect(signer).callStatic.userBalance();
+
+    dispatch(storeSigner({ account: account, balance: balance.toString() }));
     dispatch(storeContract(contract.toString()));
   };
+  const formatNumber = (num) => {
+    if (num < 1000n) return num.toString();
 
+    const suffixes = ["", "k", "m", "b", "t"];
+    let suffixNum = Math.floor(parseInt(num).toString().length / 3) - 1;
+    let shortNum = // eslint-disable-next-line eqeqeq
+    (suffixNum != 0 ? num / parseInt(10) ** (suffixNum * 3) : num).toString();
+    let shortNumStr = shortNum + suffixes[suffixNum];
+
+    return shortNumStr;
+  };
   return (
     <Nav explorepage={explorepage}>
       <div className="leftside">
         <img onClick={() => navigate("/")} src={logo} alt="logo" />
-        {explorepage && (
-          <p
-            onClick={() => {
-              navigate("/profile");
-            }}
-          >
-            Go To My Profile
-          </p>
-        )}
       </div>
 
-      {!explorepage && !createpage && !profilepage && (
+      {homepage && (
         <div className="links">
           <p onClick={() => navigate("/explore")}>Explore</p>
 
@@ -191,10 +205,9 @@ function Navbar() {
         {explorepage && (
           <>
             <Search />
-            <img src={bell} alt="notif" />
           </>
         )}
-        {(createpage || profilepage) && (
+        {!homepage && !explorepage && (
           <>
             <p
               onClick={() => {
@@ -205,7 +218,7 @@ function Navbar() {
             </p>
           </>
         )}
-        {!explorepage && account && (
+        {account && (
           <>
             <p
               onClick={() => {
@@ -221,9 +234,14 @@ function Navbar() {
             >
               Profile
             </p>
+            <img src={bell} alt="notif" />
+            <div className="balance">
+              <p>{formatNumber(balance)}</p>
+              <img src={mmn} alt="mmn" />
+            </div>
           </>
         )}
-        {(createpage || profilepage) && <img src={bell} alt="notif" />}
+
         <button onClick={() => handleConnect()} className="connect">
           {account ? account.slice(0, 5) : "Connect"}
         </button>

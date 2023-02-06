@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import styled from "styled-components";
 import Sidebar from "../components/Sidebar";
 import { useEffect, useState } from "react";
@@ -68,7 +69,7 @@ function Explore() {
               image: meta.image,
               name: meta.name,
               description: meta.description,
-              tags: meta.tag,
+              tags: meta.tags,
             };
             return item;
           }

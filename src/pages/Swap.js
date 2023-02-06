@@ -6,6 +6,8 @@ import mmn from "../assets/mmn.svg";
 import { ethers } from "ethers";
 import NFTMarketplace from "../data/abi/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import Address from "../data/abi/contracts/NFTMarketplace.sol/Address.json";
+import { useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 const Wrapper = styled.div`
   background: #000;
   height: 100vh;
@@ -119,8 +121,20 @@ const Wrapper = styled.div`
 `;
 
 function Swap() {
+  const { account } = useSelector((state) => state.web3);
   const [ethvalue, setEthValue] = useState("0");
   const [flip, setFlip] = useState(false);
+  const notify = () =>
+    toast.error("Connect Your Wallet To Start Swapping", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   const handleSwap = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     await provider.send("eth_requestAccounts", []);
@@ -145,6 +159,18 @@ function Swap() {
 
   return (
     <Wrapper>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        theme="dark"
+      />
       <div className="swap-container">
         <p>{!flip ? "Swap ETH to MMN" : "Swap MMN to ETH"}</p>
         {!flip && (
@@ -188,7 +214,9 @@ function Swap() {
           </div>
         )}
         <div className="button-container">
-          <button onClick={() => handleSwap()}>Swap</button>
+          <button onClick={() => (account ? handleSwap() : notify())}>
+            {account ? "Swap" : "Connect Your Wallet"}
+          </button>
         </div>
       </div>
     </Wrapper>

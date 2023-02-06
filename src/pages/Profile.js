@@ -88,6 +88,7 @@ function Profile() {
               created: i.created.toNumber(),
               image: meta.image,
               name: meta.name,
+              tags: meta.tags,
               description: meta.description,
             };
             return item;

@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 import NFTMarketplace from "../../data/abi/contracts/NFTMarketplace.sol/NFTMarketplace.json";
 import Address from "../../data/abi/contracts/NFTMarketplace.sol/Address.json";
 import { formatDistanceToNow, fromUnixTime } from "date-fns";
+import { ToastContainer, toast } from "react-toastify";
 const Wrapper = styled.div`
 .owner-container {
     display: flex;
@@ -136,13 +137,34 @@ function NFT({ item, setLike, like }) {
       let transaction = await contract.connect(signer).addLikeToNft(tokenID);
       await transaction.wait();
     } catch {
-      alert("you already liked this meme");
+      toast.error("You already liked this meme", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
 
     setLike(!like);
   };
   return (
     <Wrapper>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover={false}
+        theme="dark"
+      />
       <div className="owner-container">
         <div className="avatar"></div>
         <p className="owner">{item.seller.slice(0, 5)}</p>
@@ -180,7 +202,9 @@ function NFT({ item, setLike, like }) {
       </div>
       <div className="tags">
         <p>Tags</p>
-        <div className="tag">{item.tags}</div>
+        {item.tags.map((tag) => (
+          <div className="tag">{tag}</div>
+        ))}
       </div>
     </Wrapper>
   );
