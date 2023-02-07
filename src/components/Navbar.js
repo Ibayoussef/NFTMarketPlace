@@ -128,7 +128,6 @@ function Navbar() {
   const location = useLocation();
   const explorepage = location.pathname === "/explore";
 
-  const homepage = location.pathname === "/";
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { account, balance } = useSelector((state) => state.web3);
@@ -150,14 +149,16 @@ function Navbar() {
       NFTMarketplace,
       signer
     );
-
+    let balance = 0;
+    if (signer) {
+      balance = await contract.connect(signer).callStatic.userBalance();
+    }
     window.ethereum.on("accountsChanged", async (accounts) => {
-      const balance = await contract.connect(signer).callStatic.userBalance();
+      balance = await contract.connect(signer).callStatic.userBalance();
       dispatch(
         storeSigner({ account: accounts[0], balance: balance.toString() })
       );
     });
-    const balance = await contract.connect(signer).callStatic.userBalance();
 
     dispatch(storeSigner({ account: account, balance: balance.toString() }));
     dispatch(storeContract(contract.toString()));
@@ -168,7 +169,7 @@ function Navbar() {
     const suffixes = ["", "k", "m", "b", "t"];
     let suffixNum = Math.floor(parseInt(num).toString().length / 3) - 1;
     let shortNum = // eslint-disable-next-line eqeqeq
-    (suffixNum != 0 ? num / parseInt(10) ** (suffixNum * 3) : num).toString();
+      (suffixNum != 0 ? num / parseInt(10) ** (suffixNum * 3) : num).toString();
     let shortNumStr = shortNum + suffixes[suffixNum];
 
     return shortNumStr;
@@ -179,35 +180,13 @@ function Navbar() {
         <img onClick={() => navigate("/")} src={logo} alt="logo" />
       </div>
 
-      {homepage && (
-        <div className="links">
-          <p onClick={() => navigate("/explore")}>Explore</p>
-
-          <p
-            onClick={() => {
-              navigate("/");
-              setTimeout(() => feature.scrollIntoView(), 1000);
-            }}
-          >
-            Features
-          </p>
-          <p
-            onClick={() => {
-              navigate("/");
-              setTimeout(() => roadmap.scrollIntoView(), 1000);
-            }}
-          >
-            RoadMap
-          </p>
-        </div>
-      )}
       <div className="rightside">
         {explorepage && (
           <>
             <Search />
           </>
         )}
-        {!homepage && !explorepage && (
+        {!explorepage && (
           <>
             <p
               onClick={() => {

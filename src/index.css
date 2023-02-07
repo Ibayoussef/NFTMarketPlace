@@ -8,6 +8,12 @@ body {
 
 }
 
+@media (max-width: 900px) {
+  body {
+    padding: 0px
+  }
+}
+
 html {
   font-size: calc(16px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
 }

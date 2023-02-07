@@ -17,8 +17,15 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  background: rgba(35, 31, 58, 0.77);
+  background: #111;
   height: 100vh;
+
+  overflow: auto;
+  @media (max-width: 900px) {
+    width: 210px;
+    padding-top: 70px;
+    overflow: auto;
+  }
   width: fit-content;
   padding: 49px 0px;
   gap: 23px;
@@ -28,41 +35,49 @@ const Wrapper = styled.div`
   .link-container {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     gap: 13px;
     width: 100%;
     transition: all 0.4s;
     cursor: pointer;
-    padding: 0px 49px;
+    padding: 0px 20px;
     &:hover {
       background: #1f607a;
+    }
+    img {
+      width: 18px;
+      height: 18px;
     }
     p {
       font-weight: 700;
-      font-size: 1rem;
-      line-height: 36px;
-      width: 100%;
-      text-transform: uppercase;
+      font-size: 0.6rem;
+      line-height: 21px;
+      text-transform: capitalize;
       color: #ffffff;
-
-      text-shadow: 2px 2px 2px #7edbea;
     }
   }
-  .category {
-    font-weight: 700;
-    font-size: 1rem;
-    line-height: 36px;
-    width: 100%;
-    cursor: pointer;
-    text-transform: uppercase;
-    color: #ffffff;
-    width: 100%;
-    text-align: center;
+  .linko {
     &:hover {
       background: #1f607a;
     }
-    text-shadow: 2px 2px 2px #7edbea;
+    transition: all 0.4s;
+    font-weight: 700;
+    font-size: 0.6rem;
+    line-height: 21px;
+    padding-left: 20px;
+    text-transform: capitalize;
+    color: #ffffff;
+    width: 100%;
+    cursor: pointer;
+  }
+  .category {
+    font-weight: 700;
+    font-size: 0.6rem;
+    line-height: 21px;
+    padding-left: 20px;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.55);
   }
 `;
 
@@ -130,11 +145,11 @@ function Sidebar() {
           <p>{link.name}</p>
         </div>
       ))}
-      <p className="category">Categories</p>
+      <p className="category">Explore Popular Tags</p>
       {categories.length > 0 &&
         categories.map((category) => (
           <p
-            className={`category ${filterStatus === category ? "active" : ""}`}
+            className={`linko ${filterStatus === category ? "active" : ""}`}
             onClick={() => {
               dispatch(
                 storeFilterStatus({

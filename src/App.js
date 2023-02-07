@@ -2,9 +2,11 @@ import { Outlet, Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
 import { Home, Create, Explore, Profile, Swap } from "./pages";
 import Navbar from "./components/Navbar";
+import MobileNav from "./components/MobileNav";
+import isMobile from "ismobilejs";
 const Layout = () => (
   <>
-    <Navbar />
+    {isMobile().phone ? <MobileNav /> : <Navbar />}
     <Outlet />
     <Footer />
   </>

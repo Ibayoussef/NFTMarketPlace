@@ -10,24 +10,11 @@ const Wrapper = styled.div`
   z-index: 99999;
   background: linear-gradient(180deg, #1f607a 0%, #5f2fc0 66.67%, #7f16e3 100%);
   color: white;
-  /* &:after {
-      content: ""; 
-            position: absolute;
-      top: ${(props) => props.arrowParams.mt};
-      left: ${(props) => props.arrowParams.ml};
-      width: 61px;
-      height: 106px;
-      z-index: 99;
-      background: linear-gradient(
-        180deg,
-        #5f2fc0 0%,
-        rgba(127, 22, 227, 0.5) 100%,
-        rgba(127, 22, 227, 1) 60%
-      );
-      transform: ${(props) => props.arrowParams.rotate};
-      clip-path: polygon(100% 100%, 0 97%, 52% 0);
-    }
-    } */
+  @media (max-width: 900px) {
+    width: 100%;
+    z-index: 100;
+  }
+
   .title {
     font-weight: 500;
     font-size: 0.8rem;

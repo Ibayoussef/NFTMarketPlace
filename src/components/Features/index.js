@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import mascot from "../../assets/mascot.jpg";
 import Description from "./Description";
+import isMobile from "ismobilejs";
 const Wrapper = styled.div`
   position: relative;
   z-index: 1001;
@@ -36,14 +37,22 @@ const Wrapper = styled.div`
       width: 100%;
     }
   }
+  @media (max-width: 900px) {
+    width: 100%;
+    height: 110vh;
+    padding: 50px 0;
+  }
 `;
 
 function Features() {
+  const mobile = isMobile().phone;
   return (
     <Wrapper id="feature">
-      <div className="img-container">
-        <img src={mascot} alt="mascot" />
-      </div>
+      {!mobile && (
+        <div className="img-container">
+          <img src={mascot} alt="mascot" />
+        </div>
+      )}
 
       <Description />
     </Wrapper>

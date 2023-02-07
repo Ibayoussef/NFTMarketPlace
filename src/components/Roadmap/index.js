@@ -56,6 +56,16 @@ const Wrapper = styled.div`
       height: 100%;
     }
   }
+  @media (max-width: 900px) {
+    .titlewrapper {
+      .title {
+        font-size: 20px;
+      }
+      .bubbles {
+        gap: 50px;
+      }
+    }
+  }
 `;
 
 function Roadmap() {

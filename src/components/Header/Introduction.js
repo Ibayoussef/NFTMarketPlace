@@ -47,6 +47,27 @@ const Wrapper = styled.div`
       box-shadow: 2px 1.5px 2px #b33e92;
     }
   }
+  @media (max-width: 900px) {
+    background: #060b19;
+    border: 1px solid #5f2fc0;
+    border-radius: 71px;
+    width: 100%;
+    height: 100%;
+    gap: 22px;
+    position: relative;
+    margin-top: -150px;
+    padding: 50px 20px;
+    justify-content: flex-start;
+    .title {
+      font-size: 24px;
+    }
+    .description {
+      font-size: 14px;
+    }
+    .explore {
+      font-size: 14px;
+    }
+  }
 `;
 
 function Introduction() {

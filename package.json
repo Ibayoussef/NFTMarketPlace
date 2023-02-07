@@ -13,6 +13,7 @@
     "dotenv": "^16.0.3",
     "ethers": "^5.7.2",
     "form-data": "^4.0.0",
+    "ismobilejs": "^1.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-pinata": "^1.1.2",

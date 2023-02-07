@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 const Wrapper = styled.div`
   background: #060b19;
@@ -9,6 +8,21 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 34px 0;
+  @media (max-width: 900px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0px 5px;
+    width: 100%;
+    * {
+      width: 100% !important;
+    }
+    button {
+      width: 100px !important;
+    }
+  }
+
   .about {
     img {
       width: 100%;
@@ -132,7 +146,7 @@ const CopyRight = styled.div`
 function Footer() {
   const [feature, setFeature] = useState();
   const [roadmap, setRoadmap] = useState();
-  const navigate = useNavigate();
+
   useEffect(() => {
     const feature = document.querySelector("#feature");
     const roadmap = document.querySelector("#roadmap");
@@ -153,25 +167,7 @@ function Footer() {
             passionate about bringing this vision to life.
           </p>
         </div>
-        <div className="links">
-          <p onClick={() => navigate("/explore")}>Explore</p>
-          <p
-            onClick={() => {
-              navigate("/");
-              setTimeout(() => feature.scrollIntoView(), 1000);
-            }}
-          >
-            Features
-          </p>
-          <p
-            onClick={() => {
-              navigate("/");
-              setTimeout(() => roadmap.scrollIntoView(), 1000);
-            }}
-          >
-            RoadMap
-          </p>
-        </div>
+
         <div className="contact">
           <div className="title">Stay Informed</div>
           <div className="desc">To get the latest news Informations:</div>

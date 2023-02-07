@@ -121,6 +121,15 @@ line-height: 21px;
 color: #1F607A;
     }
 }
+@media (max-width: 900px) {
+  width: 100%;
+  padding: 0px 20px;
+.img-container {
+  width: 100%;
+height: 350px;
+
+}
+}
 `;
 
 function NFT({ item, setLike, like }) {

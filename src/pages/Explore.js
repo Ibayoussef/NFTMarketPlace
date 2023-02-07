@@ -17,6 +17,9 @@ const Wrapper = styled.div`
 
   align-items: flex-start;
   width: 100%;
+  @media (max-width: 900px) {
+    margin-top: 90px;
+  }
 `;
 const NFTS = styled.div`
   position: relative;

@@ -56,6 +56,33 @@ const Wrapper = styled.div`
       box-shadow: 2px 1.5px 2px #b33e92;
     }
   }
+  @media (max-width: 900px) {
+    width: 100%;
+    height: 100vh;
+    padding: 60px 20px;
+    padding-bottom: 50px;
+    .title {
+      margin-top: 50px;
+    }
+    .title,
+    .minititle {
+      font-size: 18px;
+    }
+    .slogan {
+      font-size: 10px;
+    }
+    .mt-39 {
+      margin-top: 11px;
+    }
+    .mt-13 {
+      margin-top: 9px;
+    }
+    .button {
+      font-size: 11px;
+      margin-top: 10px;
+      padding: 5px 10px;
+    }
+  }
 `;
 
 function Description() {

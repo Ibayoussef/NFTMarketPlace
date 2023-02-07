@@ -51,6 +51,16 @@ const Wrapper = styled.div`
       box-shadow: 2px 1.5px 2px #b33e92;
     }
   }
+  @media (max-width: 900px) {
+    margin-top: 90px;
+    .grid {
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 `;
 
 function Profile() {

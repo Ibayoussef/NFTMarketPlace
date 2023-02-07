@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Introduction from "./Introduction";
 import headerimg from "../../assets/home.jpg";
+import isMobile from "ismobilejs";
 const Wrapper = styled.div`
   position: relative;
   display: flex;
@@ -8,6 +9,7 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: flex-start;
   width: 100%;
+
   .elipse {
     position: absolute;
     z-index: 1000;
@@ -34,17 +36,37 @@ const Wrapper = styled.div`
     height: 100vh;
     width: 100%;
   }
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .img-container {
+      width: 100% !important;
+      height: 585px;
+      img {
+        height: 585px;
+      }
+    }
+  }
 `;
 
 function Header() {
+  const mobile = isMobile().phone;
   return (
     <Wrapper>
+      {mobile && (
+        <div className="img-container">
+          <img src={headerimg} alt="header-img" />
+        </div>
+      )}
       <Introduction />
-      <div className="img-container">
-        <img src={headerimg} alt="header-img" />
-      </div>
+      {!mobile && (
+        <div className="img-container">
+          <img src={headerimg} alt="header-img" />
+        </div>
+      )}
 
-      <div className="elipse"></div>
+      {!mobile && <div className="elipse"></div>}
     </Wrapper>
   );
 }

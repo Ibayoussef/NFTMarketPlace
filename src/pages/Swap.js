@@ -61,6 +61,9 @@ const Wrapper = styled.div`
         box-shadow: 0 0 20px #9302cc;
       }
     }
+    @media (max-width: 900px) {
+      width: 90%;
+    }
     .button-container {
       width: 100%;
       display: flex;
