@@ -13,6 +13,7 @@ import image from "../../assets/image.svg";
 import { useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import isMobile from "ismobilejs";
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -151,7 +152,7 @@ const Wrapper = styled.div`
     font-weight: 700;
     width: 100%;
     height: 70px;
-    font-size: 16px;
+     font-size: 0.6rem;
     line-height: 24px;
     padding-left: 20px;
     color: #000000;
@@ -220,7 +221,23 @@ const Wrapper = styled.div`
       object-fit: cover;
       left: 0;
     }}
-    
+    @media (max-width: 900px) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .form {
+        width: 100%;
+        padding: 0 20px;
+        h1 { font-size: 14px;}
+      }
+      .icon {
+        bottom: 88px;
+        left: 45px;
+      }
+      .image {
+        width: 100%;
+      }
+    }
 `;
 
 function PinataForm() {
@@ -320,6 +337,11 @@ function PinataForm() {
           <Loading loading={loading} done={done} />
         </div>
       )}
+      {isMobile().phone && (
+        <div className="image">
+          <img src={fileURL ? fileURL : preview} alt="preview" />
+        </div>
+      )}
       <div className="form">
         {!account && <p>Connect your wallet to be able to mint</p>}
         <ToastContainer
@@ -350,9 +372,11 @@ function PinataForm() {
           setFileURL={setFileUrl}
         />
       </div>
-      <div className="image">
-        <img src={fileURL ? fileURL : preview} alt="preview" />
-      </div>
+      {!isMobile().phone && (
+        <div className="image">
+          <img src={fileURL ? fileURL : preview} alt="preview" />
+        </div>
+      )}
     </Wrapper>
   );
 }

@@ -248,6 +248,27 @@ input[type="number"]:focus {
     color: #ffffff;
     cursor: pointer;
   }
+  @media (max-width: 900px) {
+    width: 100%;
+    padding: 10px;
+    gap: 4px;
+    input {
+      width: 100% !important;
+    }
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+    }
+    .font-color {
+      input {
+        margin-top: 2px;
+        width: 50px !important;
+        height: 50px;
+      }
+    }
+  }
 `;
 
 function Form({
@@ -265,6 +286,7 @@ function Form({
   setFontWeight,
   setImage,
   setActive,
+  mobile,
 }) {
   const range = useRef();
   const rangeWeight = useRef();
@@ -311,34 +333,70 @@ function Form({
           ))}
         </div>
       </div>
-      <div className="fontsize">
-        <p className="titles">Text Size:</p>
-        <div className="range-container">
-          <input
-            ref={range}
-            type="range"
-            min={10}
-            max={150}
-            value={fontSize}
-            onInput={() => handleFontSize()}
-          />
-          <div className="value">{fontSize + " px"}</div>
+      {!mobile && (
+        <>
+          <div className="fontsize">
+            <p className="titles">Text Size:</p>
+            <div className="range-container">
+              <input
+                ref={range}
+                type="range"
+                min={10}
+                max={150}
+                value={fontSize}
+                onInput={() => handleFontSize()}
+              />
+              <div className="value">{fontSize + " px"}</div>
+            </div>
+          </div>
+          <div className="fontsize">
+            <p className="titles">Text Font Weight:</p>
+            <div className="range-container">
+              <input
+                ref={rangeWeight}
+                type="range"
+                min={200}
+                max={1000}
+                value={fontWeight}
+                onInput={() => handleFontWeight()}
+              />
+              <div className="value">{fontWeight}</div>
+            </div>
+          </div>
+        </>
+      )}
+      {mobile && (
+        <div className="buttons">
+          <div className="fontsize">
+            <p className="titles">Text Size:</p>
+            <div className="range-container">
+              <input
+                ref={range}
+                type="range"
+                min={10}
+                max={150}
+                value={fontSize}
+                onInput={() => handleFontSize()}
+              />
+              <div className="value">{fontSize + " px"}</div>
+            </div>
+          </div>
+          <div className="fontsize">
+            <p className="titles">Text Font Weight:</p>
+            <div className="range-container">
+              <input
+                ref={rangeWeight}
+                type="range"
+                min={200}
+                max={1000}
+                value={fontWeight}
+                onInput={() => handleFontWeight()}
+              />
+              <div className="value">{fontWeight}</div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="fontsize">
-        <p className="titles">Text Font Weight:</p>
-        <div className="range-container">
-          <input
-            ref={rangeWeight}
-            type="range"
-            min={200}
-            max={1000}
-            value={fontWeight}
-            onInput={() => handleFontWeight()}
-          />
-          <div className="value">{fontWeight}</div>
-        </div>
-      </div>
+      )}
       <div className="font-color">
         <p className="titles">Text Font Color:</p>
         <input
@@ -347,16 +405,32 @@ function Form({
           onChange={(e) => setFontColor(e.target.value)}
         />
       </div>
-
-      <button className="save" onClick={() => handleExport()}>
-        Save Image
-      </button>
-      <button className="save" onClick={() => setImage("")}>
-        Change Image
-      </button>
-      <button className="save" onClick={() => setActive("second")}>
-        Next
-      </button>
+      {mobile && (
+        <div className="buttons">
+          <button className="save" onClick={() => handleExport()}>
+            Save Image
+          </button>
+          <button className="save" onClick={() => setImage("")}>
+            Change Image
+          </button>
+          <button className="save" onClick={() => setActive("second")}>
+            Next
+          </button>
+        </div>
+      )}
+      {!mobile && (
+        <>
+          <button className="save" onClick={() => handleExport()}>
+            Save Image
+          </button>
+          <button className="save" onClick={() => setImage("")}>
+            Change Image
+          </button>
+          <button className="save" onClick={() => setActive("second")}>
+            Next
+          </button>
+        </>
+      )}
     </Wrapper>
   );
 }

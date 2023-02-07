@@ -34,6 +34,9 @@ const Wrapper = styled.div`
     height: 1px;
     width: 50%;
   }
+  @media (max-width: 900px) {
+    margin-top: 70px;
+  }
 `;
 
 const TextContainer = styled.div`
@@ -60,6 +63,13 @@ const TextContainer = styled.div`
   .second {
     position: relative;
     right: 30px;
+  }
+  @media (max-width: 900px) {
+    width: 100%;
+    .first,
+    .second {
+      font-size: 14px;
+    }
   }
 `;
 

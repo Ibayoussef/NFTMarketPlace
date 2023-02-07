@@ -27,7 +27,7 @@ const NFTS = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-
+  z-index: 1;
   justify-content: center;
   align-items: center;
 `;

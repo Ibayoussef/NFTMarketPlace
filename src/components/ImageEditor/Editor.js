@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Form from "./Form";
 import styled from "styled-components";
 import preview from "../../assets/placeholder.png";
+import isMobile from "ismobilejs";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -10,7 +11,6 @@ const Wrapper = styled.div`
   align-items: flex-start;
   margin-top: 47px;
   flex-wrap: wrap;
-
   .image {
     position: relative;
    
@@ -37,6 +37,13 @@ const Wrapper = styled.div`
       top: 0;
       left: 0;
     }
+  
+  }
+      @media (max-width: 900px) {
+     flex-direction: column;
+     .image {
+      width: 100%;
+     }
   }
 `;
 
@@ -165,11 +172,32 @@ function Editor({ setActive }) {
 
   return (
     <Wrapper>
+      {isMobile().phone && (
+        <div className="image">
+          {!image && (
+            <>
+              <input type="file" onChange={handleFileChange} />
+              <img src={preview} alt="preview" />
+            </>
+          )}
+          {image && (
+            <canvas
+              ref={canvasRef}
+              width={500}
+              height={500}
+              onMouseDown={handleMouseDown}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
+            />
+          )}
+        </div>
+      )}
       <Form
         newText={newText}
         handleAddText={handleAddText}
         handleTextChange={handleTextChange}
         texts={texts}
+        mobile={isMobile().phone}
         handleRemoveText={handleRemoveText}
         handleExport={handleExport}
         fontSize={fontSize}
@@ -181,24 +209,26 @@ function Editor({ setActive }) {
         setImage={setImage}
         setActive={setActive}
       />
-      <div className="image">
-        {!image && (
-          <>
-            <input type="file" onChange={handleFileChange} />
-            <img src={preview} alt="preview" />
-          </>
-        )}
-        {image && (
-          <canvas
-            ref={canvasRef}
-            width={500}
-            height={500}
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
-            onMouseMove={handleMouseMove}
-          />
-        )}
-      </div>
+      {!isMobile().phone && (
+        <div className="image">
+          {!image && (
+            <>
+              <input type="file" onChange={handleFileChange} />
+              <img src={preview} alt="preview" />
+            </>
+          )}
+          {image && (
+            <canvas
+              ref={canvasRef}
+              width={500}
+              height={500}
+              onMouseDown={handleMouseDown}
+              onMouseUp={handleMouseUp}
+              onMouseMove={handleMouseMove}
+            />
+          )}
+        </div>
+      )}
     </Wrapper>
   );
 }

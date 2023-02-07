@@ -53,6 +53,7 @@ background: black;
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 1;
     object-fit: contain;
 }
 .buttons {
@@ -127,7 +128,9 @@ color: #1F607A;
 .img-container {
   width: 100%;
 height: 350px;
-
+img {
+  z-index: 1;
+}
 }
 }
 `;

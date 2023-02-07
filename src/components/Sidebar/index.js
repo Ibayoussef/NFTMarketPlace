@@ -19,7 +19,33 @@ const Wrapper = styled.div`
   align-items: flex-start;
   background: #111;
   height: 100vh;
+  transition: all 0.4s;
 
+  @media (max-width: 900px) {
+    width: ${(props) => (props.open ? "50%" : "0%")} !important;
+    .collapse {
+      position: fixed;
+
+      top: 63px;
+      left: 10px;
+      width: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 20px;
+      gap: 4px;
+
+      z-index: 9999999;
+      .line {
+        position: relative;
+        z-index: 9999999;
+        height: 3px;
+        width: 100%;
+        background: #7f16e3;
+      }
+    }
+  }
   overflow: auto;
   @media (max-width: 900px) {
     width: 210px;
@@ -89,6 +115,7 @@ const links = [
 
 function Sidebar() {
   const { filterStatus, nfts, account } = useSelector((state) => state.web3);
+  const [open, setOpen] = useState(true);
   const [favFilter, setFavfilter] = useState([]);
   const [categories, setCategories] = useState([]);
   const dispatch = useDispatch();
@@ -125,7 +152,12 @@ function Sidebar() {
     setCategories(array);
   }, [nfts]);
   return (
-    <Wrapper>
+    <Wrapper open={open}>
+      <div className="collapse" onClick={() => setOpen(!open)}>
+        <div className="line"></div>
+        <div className="line"></div>
+        <div className="line"></div>
+      </div>
       {links.map((link) => (
         <div
           key={link.name}
