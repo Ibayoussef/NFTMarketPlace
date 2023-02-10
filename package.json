@@ -31,7 +31,8 @@
     "build": "react-scripts build",
     "test": "npx hardhat test",
     "deploy": "npx hardhat run scripts/deploy.js --network goerli",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postbuild": "react-snap"
   },
   "eslintConfig": {
     "extends": [
@@ -54,6 +55,7 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
     "hardhat": "^2.12.6",
-    "hardhat-abi-exporter": "^2.10.1"
+    "hardhat-abi-exporter": "^2.10.1",
+    "react-snap": "^1.23.0"
   }
 }
